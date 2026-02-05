@@ -1,38 +1,69 @@
-# 🥰 Be My Valentine? 🥰
+# React + TypeScript + Vite
 
-![Project Image](https://i.imgur.com/8q884zI.png)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Welcome to the most adorable project you've ever seen! This is a special React application designed to ask that special someone: "Will you be my Valentine?".
+Currently, two official plugins are available:
 
-## 💖 What's Inside? 💖
-[Link to site](https://formyvalentine.netlify.app)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-This project is built with love using React and Vite. It features a cute and interactive UI that playfully nudges the user towards saying "Yes" to being your Valentine.
+## Expanding the ESLint configuration
 
-## 🎁 Features 🎁
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-- Cute and playful animations
-- Interactive buttons that respond to user interaction
-- Lovely images and heartwarming messages
+```js
+export default tseslint.config([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-## 🚀 Getting Started 🚀
+      // Remove tseslint.configs.recommended and replace with this
+      ...tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      ...tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      ...tseslint.configs.stylisticTypeChecked,
 
-To get started with this project, follow these steps:
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-1. Clone the repository
-2. Install the dependencies with `npm/pnpm/bun install`
-3. Start the development server with `npm/pnpm/bun run dev`
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-Now you're ready to ask the big question!
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-## 💕 Made with Love 💕
-
-This project was made with love by [Anish](https://github.com/xeven777). Feel free to use it to ask your own special someone to be your Valentine!
-
-## 💌 Feedback and Contributions 💌
-
-Feedback and contributions are always welcome! Feel free to open an issue or submit a pull request.
-
-Happy Valentine's Day! 💘
----
-<img src="https://widgetbite.com/stats/Xeven777" alt="watching_count" />
+export default tseslint.config([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
